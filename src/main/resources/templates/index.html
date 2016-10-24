@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <!-- Add js,css here -->
+</head>
+<body>
+<th:block layout:fragment="content">
+    <p th:text="${devices}">This is index 123</p>
+</th:block>
+</body>
+</html>
