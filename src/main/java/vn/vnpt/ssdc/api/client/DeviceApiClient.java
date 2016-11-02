@@ -7,6 +7,10 @@ import org.springframework.web.client.RestTemplate;
 import vn.vnpt.ssdc.dto.AcsResponse;
 import vn.vnpt.ssdc.utils.StringUtils;
 
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,15 +21,62 @@ public class DeviceApiClient {
 
     private RestTemplate restTemplate;
     private String apiEndpointUrl;
+
     @Autowired
     public DeviceApiClient(@Value("${apiEndpointUrl}") String apiEndpointUrl) {
         this.restTemplate = new RestTemplate();
         this.apiEndpointUrl = apiEndpointUrl + "devices";
     }
 
-    public AcsResponse findDevices(Map<String,String> queryParams) {
+    public AcsResponse findDevices(Map<String, String> queryParams) {
         String queryString = StringUtils.queryStringFromMap(queryParams);
         String url = this.apiEndpointUrl + "?" + queryString;
-        return this.restTemplate.getForObject(url,AcsResponse.class,queryParams);
+        return this.restTemplate.getForObject(url, AcsResponse.class, queryParams);
+    }
+
+    /**
+     * Reboot device by device ID
+     *
+     * @param deviceId
+     * @param timeout
+     * @param isNow
+     * @return 202 if the tasks have been queued to be executed at the next inform.
+     * 404 Not found
+     * status code 200 if tasks have been successfully executed
+     */
+    public AcsResponse reboot(String deviceId, String timeout, String isNow) {
+        StringBuilder uri = new StringBuilder(apiEndpointUrl);
+        uri.append("/" + deviceId + "/reboot");
+
+        //Build query params
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("now", isNow);
+        queryParams.put("timeout", timeout);
+        String queryString = StringUtils.queryStringFromMap(queryParams);
+        uri.append("?" + queryString);
+        return this.restTemplate.postForObject(uri.toString(), null, AcsResponse.class, queryParams);
+    }
+
+    /**
+     * Factory device by device ID
+     *
+     * @param deviceId
+     * @param timeout
+     * @param isNow
+     * @return 202 if the tasks have been queued to be executed at the next inform.
+     * 404 Not found
+     * status code 200 if tasks have been successfully executed
+     */
+    public AcsResponse factoryReset(String deviceId, String timeout, String isNow) {
+        StringBuilder uri = new StringBuilder(apiEndpointUrl);
+        uri.append("/" + deviceId + "/factoryReset");
+
+        //Build query params
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("timeout", timeout + "");
+        queryParams.put("now", isNow + "");
+        String queryString = StringUtils.queryStringFromMap(queryParams);
+        uri.append("?" + queryString);
+        return this.restTemplate.postForObject(uri.toString(), null, AcsResponse.class, queryParams);
     }
 }
