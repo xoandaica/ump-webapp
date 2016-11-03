@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devices</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="/assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/core.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/components.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/colors.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+
+    <!-- Core JS files -->
+    <script type="text/javascript" src="/assets/js/plugins/loaders/pace.min.js"></script>
+    <script type="text/javascript" src="/assets/js/core/libraries/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/core/libraries/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/loaders/blockui.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/ui/nicescroll.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/ui/drilldown.js"></script>
+    <!-- /core JS files -->
+
+    <!-- Theme JS files -->
+    <script type="text/javascript" src="/assets/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/tables/datatables/extensions/select.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/tables/datatables/extensions/buttons.min.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/forms/selects/select2.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/core/app.js"></script>
+    <script type="text/javascript" src="/assets/js/pages/datatables_extension_select.js"></script>
+
+    <script type="text/javascript" src="/assets/js/plugins/ui/ripple.min.js"></script>
+    <!-- /theme JS files -->
+
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="page-container">
+
+        <div class="page-content">
+            <div class="sidebar sidebar-main sidebar-default">
+                <div class="sidebar-content">
+
+                    <!-- Main navigation -->
+                    <div class="sidebar-category sidebar-category-visible">
+                        <div class="category-content no-padding">
+                            <ul class="navigation navigation-main navigation-accordion">
+
+                                <!-- Layout -->
+                                <li class="navigation-header"><span>Layout</span> <i class="icon-menu" title="" data-original-title="Layout options"></i></li>
+                                <li class="">
+                                    <a href="#" class="has-ul legitRipple"><i class="icon-indent-decrease2"></i> <span>Sidebars</span></a>
+                                    <ul class="hidden-ul" style="display: none;">
+                                        <li><a href="sidebar_default_collapse.html" class="legitRipple">Default collapsible</a></li>
+                                        <li><a href="sidebar_default_hide.html" class="legitRipple">Default hideable</a></li>
+                                        <li><a href="sidebar_mini_collapse.html" class="legitRipple">Mini collapsible</a></li>
+                                        <li><a href="sidebar_mini_hide.html" class="legitRipple">Mini hideable</a></li>
+                                        <li class="">
+                                            <a href="#" class="has-ul legitRipple">Dual sidebar</a>
+                                            <ul class="hidden-ul" style="display: none;">
+                                                <li><a href="sidebar_dual.html" class="legitRipple">Dual sidebar</a></li>
+                                                <li><a href="sidebar_dual_double_collapse.html" class="legitRipple">Dual double collapse</a></li>
+                                                <li><a href="sidebar_dual_double_hide.html" class="legitRipple">Dual double hide</a></li>
+                                                <li><a href="sidebar_dual_swap.html" class="legitRipple">Swap sidebars</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="">
+                                            <a href="#" class="has-ul legitRipple">Double sidebar</a>
+                                            <ul class="hidden-ul" style="display: none;">
+                                                <li><a href="sidebar_double_collapse.html" class="legitRipple">Collapse main sidebar</a></li>
+                                                <li><a href="sidebar_double_hide.html" class="legitRipple">Hide main sidebar</a></li>
+                                                <li><a href="sidebar_double_fix_default.html" class="legitRipple">Fix default width</a></li>
+                                                <li><a href="sidebar_double_fix_mini.html" class="legitRipple">Fix mini width</a></li>
+                                                <li><a href="sidebar_double_visible.html" class="legitRipple">Opposite sidebar visible</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="sidebar_categories.html" class="legitRipple">Separate categories</a></li>
+                                        <li><a href="sidebar_hidden.html" class="legitRipple">Hidden sidebar</a></li>
+                                        <li><a href="sidebar_dark.html" class="legitRipple">Dark sidebar</a></li>
+                                        <li><a href="sidebar_components.html" class="legitRipple">Sidebar components</a></li>
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="has-ul legitRipple"><i class="icon-sort"></i> <span>Vertical navigation</span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="navigation_vertical_collapsible.html" class="legitRipple">Collapsible menu</a></li>
+                                        <li class="active"><a href="navigation_vertical_accordion.html" class="legitRipple">Accordion menu</a></li>
+                                        <li><a href="navigation_vertical_sizing.html" class="legitRipple">Navigation sizing</a></li>
+                                        <li><a href="navigation_vertical_bordered.html" class="legitRipple">Bordered navigation</a></li>
+                                        <li><a href="navigation_vertical_right_icons.html" class="legitRipple">Right icons</a></li>
+                                        <li><a href="navigation_vertical_disabled.html" class="legitRipple">Disabled navigation links</a></li>
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="has-ul legitRipple"><i class="icon-transmission"></i> <span>Horizontal navigation</span></a>
+                                    <ul class="hidden-ul" style="display: none;">
+                                        <li><a href="navigation_horizontal_click.html" class="legitRipple">Submenu on click</a></li>
+                                        <li><a href="navigation_horizontal_hover.html" class="legitRipple">Submenu on hover</a></li>
+                                        <li><a href="navigation_horizontal_elements.html" class="legitRipple">With custom elements</a></li>
+                                        <li><a href="navigation_horizontal_tabs.html" class="legitRipple">Tabbed navigation</a></li>
+                                        <li><a href="navigation_horizontal_disabled.html" class="legitRipple">Disabled navigation links</a></li>
+                                        <li><a href="navigation_horizontal_mega.html" class="legitRipple">Horizontal mega menu</a></li>
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="has-ul legitRipple"><i class="icon-menu3"></i> <span>Navbars</span></a>
+                                    <ul class="hidden-ul" style="display: none;">
+                                        <li><a href="navbar_single.html" class="legitRipple">Single navbar</a></li>
+                                        <li>
+                                            <a href="#" class="has-ul legitRipple">Multiple navbars</a>
+                                            <ul class="hidden-ul">
+                                                <li><a href="navbar_multiple_navbar_navbar.html" class="legitRipple">Navbar + navbar</a></li>
+                                                <li><a href="navbar_multiple_header_navbar.html" class="legitRipple">Header + navbar</a></li>
+                                                <li><a href="navbar_multiple_navbar_content.html" class="legitRipple">Navbar + content</a></li>
+                                                <li><a href="navbar_multiple_top_bottom.html" class="legitRipple">Top + bottom</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="navbar_colors.html" class="legitRipple">Color options</a></li>
+                                        <li><a href="navbar_sizes.html" class="legitRipple">Sizing options</a></li>
+                                        <li><a href="navbar_hideable.html" class="legitRipple">Hide on scroll</a></li>
+                                        <li><a href="navbar_components.html" class="legitRipple">Navbar components</a></li>
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a href="#" class="has-ul legitRipple"><i class="icon-tree5"></i> <span>Menu levels</span></a>
+                                    <ul class="hidden-ul" style="display: none;">
+                                        <li><a href="#" class="legitRipple"><i class="icon-IE"></i> Second level</a></li>
+                                        <li>
+                                            <a href="#" class="has-ul legitRipple"><i class="icon-firefox"></i> Second level with child</a>
+                                            <ul class="hidden-ul">
+                                                <li><a href="#" class="legitRipple"><i class="icon-android"></i> Third level</a></li>
+                                                <li>
+                                                    <a href="#" class="has-ul legitRipple"><i class="icon-apple2"></i> Third level with child</a>
+                                                    <ul class="hidden-ul">
+                                                        <li><a href="#" class="legitRipple"><i class="icon-html5"></i> Fourth level</a></li>
+                                                        <li><a href="#" class="legitRipple"><i class="icon-css3"></i> Fourth level</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="#" class="legitRipple"><i class="icon-windows"></i> Third level</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" class="legitRipple"><i class="icon-chrome"></i> Second level</a></li>
+                                    </ul>
+                                </li>
+                                <!-- /layout -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /main navigation -->
+
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="panel panel-flat">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Device Types</h4>
+
+                        <ul>
+                            <li th:each="deviceType : ${deviceTypes}" th:text="${deviceType.manufacturer}"></li>
+                        </ul>
+                        <div class="panel-body">
+                            <form class="form-horizontal" action="#" th:action="@{/device-types}" th:object="${deviceTypeDecorator}" method="POST">
+                                <fieldset class="content-group">
+                                    <legend class="text-bold">New Device Type</legend>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2">Manufacturer</label>
+                                        <div class="col-lg-10">
+                                            <input th:field="*{manufacturer}" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2">OUI</label>
+                                        <div class="col-lg-10">
+                                            <input th:field="*{oui}" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-lg-2">Product Class</label>
+                                        <div class="col-lg-10">
+                                            <input th:field="*{productClass}" type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="form-group">-->
+                                    <!--<label class="control-label col-lg-2">Firmware Version</label>-->
+                                    <!--<div class="col-lg-10">-->
+                                    <!--<input th:field="*{firmwareVersion}" type="text" class="form-control">-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                </fieldset>
+
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary legitRipple">Submit <i class="icon-arrow-right14 position-right"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</th:block>
+</body>
+</html>

@@ -17,15 +17,16 @@ import java.util.Map;
  * Created by vietnq on 10/31/16.
  */
 @Component
-public class DeviceApiClient {
+public class AcsApiClient {
 
     private RestTemplate restTemplate;
     private String apiEndpointUrl;
 
     @Autowired
-    public DeviceApiClient(@Value("${apiEndpointUrl}") String apiEndpointUrl) {
-        this.restTemplate = new RestTemplate();
-        this.apiEndpointUrl = apiEndpointUrl + "devices";
+    public AcsApiClient(@Value("${apiEndpointUrl}") String apiEndpointUrl,
+                        RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.apiEndpointUrl = apiEndpointUrl + "acs";
     }
 
     public AcsResponse findDevices(Map<String, String> queryParams) {
@@ -79,4 +80,5 @@ public class DeviceApiClient {
         uri.append("?" + queryString);
         return this.restTemplate.postForObject(uri.toString(), null, AcsResponse.class, queryParams);
     }
+
 }

@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import vn.vnpt.ssdc.api.client.DeviceApiClient;
+import vn.vnpt.ssdc.api.client.AcsApiClient;
 import vn.vnpt.ssdc.dto.AcsResponse;
 import vn.vnpt.ssdc.model.Device;
-import vn.vnpt.ssdc.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class HomeController {
 
     @Autowired
-    private DeviceApiClient deviceApiClient;
+    private AcsApiClient acsApiClient;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -34,7 +33,7 @@ public class HomeController {
         query.put("parameters", String.join(",", indexParams.keySet()));
         //TODO add paging param
 
-        AcsResponse response = deviceApiClient.findDevices(query);
+        AcsResponse response = acsApiClient.findDevices(query);
 
         List<Device> devices = Device.fromJsonString(response.body, indexParams.keySet());
 
@@ -71,7 +70,7 @@ public class HomeController {
     public AcsResponse reboot(@PathVariable String deviceId,
                               @RequestParam(value = "timeout", defaultValue = "3000") String timeout,
                               @RequestParam(value = "now", defaultValue = "false") String now) {
-        AcsResponse result = deviceApiClient.reboot(deviceId, timeout, now);
+        AcsResponse result = acsApiClient.reboot(deviceId, timeout, now);
         return result;
     }
 
@@ -91,7 +90,7 @@ public class HomeController {
     public AcsResponse factoryReset(@PathVariable String deviceId,
                                     @RequestParam(value = "timeout", defaultValue = "3000") String timeout,
                                     @RequestParam(value = "now", defaultValue = "false") String now) {
-        return deviceApiClient.factoryReset(deviceId, timeout, now);
+        return acsApiClient.factoryReset(deviceId, timeout, now);
     }
 
 }
