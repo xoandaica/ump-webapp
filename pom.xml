@@ -69,6 +69,10 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
         <!-- Provided (for embedded war support) -->
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->

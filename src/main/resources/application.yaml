@@ -2,3 +2,5 @@ spring:
   thymeleaf:
     cache: false
 apiEndpointUrl: http://localhost:8090/api/
+limitRecordPerpage : 20
+maxPageShow : 4

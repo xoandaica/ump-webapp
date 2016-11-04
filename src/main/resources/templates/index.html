@@ -9,7 +9,9 @@
     <title>Devices</title>
 
     <!-- Global stylesheets -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+          type="text/css">
+
     <link href="assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
     <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="assets/css/core.css" rel="stylesheet" type="text/css">
@@ -38,6 +40,11 @@
     <script type="text/javascript" src="assets/js/plugins/ui/ripple.min.js"></script>
     <!-- /theme JS files -->
 
+    <!-- custome jquey-->
+    <script type="text/javascript" src="assets/js/script.js" th:inline="javascript"></script>
+    <script type="text/javascript" src="assets/js/bootstrap-sortable.js"></script>
+    <link href="assets/js/bootstrap-sortable.css" rel="stylesheet" type="text/css">
+    <!-- /custome jquey-->
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -45,30 +52,112 @@
         <div class="panel panel-white">
             <div class="panel-heading">
                 <h4 class="panel-title">Devices</h4>
+                <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+            </div>
+            <div class="panel-body">
+                <!--<div >-->
+                <!--<table class="table dataTable" id="DataTables_Table_1"-->
+                <!--role="grid"-->
+                <!--aria-describedby="DataTables_Table_1_info">-->
+                <!--<thead>-->
+                <!--<tr role="row">-->
+                <!--<th class="select-checkbox sorting_disabled" data-defaultsort="disabled" rowspan="1"-->
+                <!--colspan="1" aria-label=""></th>-->
+                <!--<th  tabindex="0"-->
+                <!--aria-controls="DataTables_Table_1" rowspan="1" colspan="1" data-sortable="true"-->
+                <!--&gt; </th>-->
+                <!--<th  tabindex="0"-->
+                <!--aria-controls="DataTables_Table_1" rowspan="1" colspan="1" data-sortable="true"-->
+                <!--&gt; </th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr role="row">-->
+                <!--<td class="select-checkbox">-->
+                <!--</td>-->
+                <td><button th:href="@{/devices/{deviceId}/reboot(deviceId=${id},timeout='3000',now ='false')}"
+                       class="btn btn-primary" role="button" id="btnReboot">Reboot</button></td>
+                <td><button th:href="@{/devices/{deviceId}/factoryReset(deviceId=${id},timeout='3000',now ='false')}"
+                       class="btn btn-primary" role="button" id="btnResetFactory">Factory Reset</button></td>
+                <!--</tr>-->
+                <!--</tbody>-->
+                <!--</table>-->
+                <!--</div>-->
+                <!--<a th:href="@{/devices/{deviceId}/reboot(deviceId=${id},timeout='3000',now ='false')}"-->
+                <!--class="btn btn-primary" role="button">Reboot</a>-->
+                <!--<a th:href="@{/devices/{deviceId}/factoryReset(deviceId=${id},timeout='3000',now ='false')}"-->
+                <!--class="btn btn-primary" role="button">Factory Reset</a>-->
+                <!--&lt;!&ndash;<a href="#" class="btn btn-danger mynoty" role="button" data-layout="topRight" data-type="confirm">Remove&ndash;&gt;-->
+                <!--3333<i class="icon-play3 position-right"></i></a>-->
                 <div class="heading-elements">
                     <ul class="pagination pagination-flat pagination-sm">
-                        <li><a href="#" class="legitRipple">←</a></li>
-                        <li><a href="#" class="legitRipple">1</a></li>
-                        <li class="active"><a href="#" class="legitRipple">2</a></li>
-                        <li><a href="#" class="legitRipple">3</a></li>
-                        <li><a href="#" class="legitRipple">→</a></li>
+
+                        <li th:class="${pageModel.isFistPage()} ? 'disable' : '' ">
+                            <span th:if="${pageModel.isFistPage()}">First</span>
+                            <a th:if="${not pageModel.isFistPage()}" th:href="@{/getPage?indexPage=1&limit=0}"
+                               class="legitRipple" th:text="First">First</a>
+                        </li>
+                        <li th:class="${pageModel.isFistPage()} ? 'disable' : '' ">
+                            <span th:if="${pageModel.isFistPage()}">Previous</span>
+                            <a th:if='${not pageModel.isFistPage()}'
+                               th:href="@{'/getPage?indexPage='+ ${pageModel.previous} +'&limit=0'}" class="legitRipple"
+                               th:text="Previous">Previous</a>
+                        </li>
+
+                        <li>
+                            <a th:if='${pageModel.isHasPrevious()}' th:href="@{#}">...</a>
+                        </li>
+
+                        <li th:each="m : ${listPageModel}" th:class="${m.isActive()} ? 'active' : '' ">
+                            <a th:href="${m.url}" th:text="${m.id}" class="legitRipple"></a>
+                        </li>
+                        <li>
+                            <a th:if='${pageModel.isHasNext()}' th:href="@{#}">...</a>
+                        </li>
+                        <li th:class="${pageModel.isLastPage()} ? 'disable' : '' ">
+                            <span th:if="${pageModel.isLastPage()}">Next</span>
+                            <a th:if='${not pageModel.isLastPage()}'
+                               th:href="@{'/getPage?indexPage='+ ${pageModel.next} +'&limit=0'}" class="legitRipple"
+                               th:text="Next">Next</a>
+                        </li>
+                        <li th:class="${pageModel.isLastPage()} ? 'disable' : '' ">
+                            <span th:if="${pageModel.isLastPage()}">Last</span>
+                            <a th:if="${not pageModel.isLastPage()}"
+                               th:href="@{'/getPage?indexPage='+${pageModel.maxPage}+'&limit=0'}"
+                               class="legitRipple" th:text="Last">Last</a>
+                        </li>
+
                     </ul>
+                    <select name="selectPage" class="input-sm" id="selectPage" style="text-align-last:center;">
+                        <option value="default">- Select page -</option>
+                        <option th:each="m : ${selectBoxList}" th:value="${m.url}" th:text="'page ' +${m.id}"
+                                th:selected="${m.isActive()}"></option>
+                    </select>
                 </div>
-                <a class="heading-elements-toggle"><i class="icon-more"></i></a></div>
-
-            <div class="panel-body">
-
+                <a class="heading-elements-toggle"><i class="icon-more"></i></a>
                 <div class="datatable-scroll">
-                    <table class="table datatable-sorting dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+
+                    <table class="table datatable-sorting dataTable no-footer sortable" id="DataTables_Table_0"
+                           role="grid"
+                           aria-describedby="DataTables_Table_0_info">
                         <thead>
                         <tr role="row">
-                            <th class="select-checkbox sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
-                            <th th:each="key : ${indexParams.keySet()}" class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" th:text="${indexParams.get(key)}"></th>
+                            <th class="select-checkbox" data-defaultsort="disabled" rowspan="1"
+                                colspan="1">
+                                <center>
+                                    <input type="checkbox"  id="checkAll"/>
+                                </center>
+                            </th>
+
+                            <th th:each="key : ${indexParams.keySet()}" tabindex="0"
+                                aria-controls="DataTables_Table_0" rowspan="1" colspan="1" data-sortable="true"
+                                th:text="${indexParams.get(key)}"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="device:${devices}" role="row">
-                            <td class="select-checkbox">
+                        <tr th:each="device:${devices}" role="row" >
+                            <td>
+                               <center> <input type="checkbox" class="myCheckBox"  th:id="${device.id}"/></center>
                             </td>
                             <td th:each="key : ${indexParams.keySet()}" th:text="${device.parameters.get(key)}"></td>
                         </tr>
@@ -76,8 +165,10 @@
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
+
 
 </th:block>
 </body>
