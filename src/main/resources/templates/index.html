@@ -55,84 +55,56 @@
                 <a class="heading-elements-toggle"><i class="icon-more"></i></a>
             </div>
             <div class="panel-body">
-                <!--<div >-->
-                <!--<table class="table dataTable" id="DataTables_Table_1"-->
-                <!--role="grid"-->
-                <!--aria-describedby="DataTables_Table_1_info">-->
-                <!--<thead>-->
-                <!--<tr role="row">-->
-                <!--<th class="select-checkbox sorting_disabled" data-defaultsort="disabled" rowspan="1"-->
-                <!--colspan="1" aria-label=""></th>-->
-                <!--<th  tabindex="0"-->
-                <!--aria-controls="DataTables_Table_1" rowspan="1" colspan="1" data-sortable="true"-->
-                <!--&gt; </th>-->
-                <!--<th  tabindex="0"-->
-                <!--aria-controls="DataTables_Table_1" rowspan="1" colspan="1" data-sortable="true"-->
-                <!--&gt; </th>-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-                <!--<tr role="row">-->
-                <!--<td class="select-checkbox">-->
-                <!--</td>-->
-                <td><button th:href="@{/devices/{deviceId}/reboot(deviceId=${id},timeout='3000',now ='false')}"
+
+                <td><button
                        class="btn btn-primary" role="button" id="btnReboot">Reboot</button></td>
-                <td><button th:href="@{/devices/{deviceId}/factoryReset(deviceId=${id},timeout='3000',now ='false')}"
-                       class="btn btn-primary" role="button" id="btnResetFactory">Factory Reset</button></td>
-                <!--</tr>-->
-                <!--</tbody>-->
-                <!--</table>-->
-                <!--</div>-->
-                <!--<a th:href="@{/devices/{deviceId}/reboot(deviceId=${id},timeout='3000',now ='false')}"-->
-                <!--class="btn btn-primary" role="button">Reboot</a>-->
-                <!--<a th:href="@{/devices/{deviceId}/factoryReset(deviceId=${id},timeout='3000',now ='false')}"-->
-                <!--class="btn btn-primary" role="button">Factory Reset</a>-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-danger mynoty" role="button" data-layout="topRight" data-type="confirm">Remove&ndash;&gt;-->
-                <!--3333<i class="icon-play3 position-right"></i></a>-->
+                <td><button
+                            class="btn btn-primary" role="button" id="btnResetFactory">ResetFactory</button></td>
+
                 <div class="heading-elements">
                     <ul class="pagination pagination-flat pagination-sm">
 
-                        <li th:class="${pageModel.isFistPage()} ? 'disable' : '' ">
-                            <span th:if="${pageModel.isFistPage()}">First</span>
+                        <li th:class="${pageModel.isFistPage()} ? 'first disable' : 'first' ">
+                            <span th:if="${pageModel.isFistPage()}">⇤</span>
                             <a th:if="${not pageModel.isFistPage()}" th:href="@{/getPage?indexPage=1&limit=0}"
-                               class="legitRipple" th:text="First">First</a>
+                               class="page-link" >⇤</a>
                         </li>
-                        <li th:class="${pageModel.isFistPage()} ? 'disable' : '' ">
-                            <span th:if="${pageModel.isFistPage()}">Previous</span>
+                        <li th:class="${pageModel.isFistPage()} ? 'prev disable' : 'prev' ">
+                            <span th:if="${pageModel.isFistPage()}">⇠</span>
                             <a th:if='${not pageModel.isFistPage()}'
-                               th:href="@{'/getPage?indexPage='+ ${pageModel.previous} +'&limit=0'}" class="legitRipple"
-                               th:text="Previous">Previous</a>
+                               th:href="@{'/getPage?indexPage='+ ${pageModel.previous} +'&limit=0'}" class="page-link"
+                               >⇠</a>
                         </li>
 
-                        <li>
-                            <a th:if='${pageModel.isHasPrevious()}' th:href="@{#}">...</a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a th:if='${pageModel.isHasPrevious()}' th:href="@{#}">...</a>-->
+                        <!--</li>-->
 
-                        <li th:each="m : ${listPageModel}" th:class="${m.isActive()} ? 'active' : '' ">
-                            <a th:href="${m.url}" th:text="${m.id}" class="legitRipple"></a>
+                        <li th:each="m : ${listPageModel}" th:class="${m.isActive()} ? 'page active' : '' ">
+                            <a th:href="${m.url}" th:text="${m.id}" class="page-link"></a>
                         </li>
-                        <li>
-                            <a th:if='${pageModel.isHasNext()}' th:href="@{#}">...</a>
-                        </li>
-                        <li th:class="${pageModel.isLastPage()} ? 'disable' : '' ">
-                            <span th:if="${pageModel.isLastPage()}">Next</span>
+                        <!--<li>-->
+                            <!--<a th:if='${pageModel.isHasNext()}' th:href="@{#}">...</a>-->
+                        <!--</li>-->
+                        <li th:class="${pageModel.isLastPage()} ? 'next disable' : 'next' ">
+                            <span th:if="${pageModel.isLastPage()}">⇢</span>
                             <a th:if='${not pageModel.isLastPage()}'
-                               th:href="@{'/getPage?indexPage='+ ${pageModel.next} +'&limit=0'}" class="legitRipple"
-                               th:text="Next">Next</a>
+                               th:href="@{'/getPage?indexPage='+ ${pageModel.next} +'&limit=0'}" class="page-link"
+                               >⇢</a>
                         </li>
-                        <li th:class="${pageModel.isLastPage()} ? 'disable' : '' ">
-                            <span th:if="${pageModel.isLastPage()}">Last</span>
+                        <li th:class="${pageModel.isLastPage()} ? 'last disable' : 'last' ">
+                            <span th:if="${pageModel.isLastPage()}">⇥</span>
                             <a th:if="${not pageModel.isLastPage()}"
                                th:href="@{'/getPage?indexPage='+${pageModel.maxPage}+'&limit=0'}"
-                               class="legitRipple" th:text="Last">Last</a>
+                               class="page-link" >⇥</a>
                         </li>
 
                     </ul>
-                    <select name="selectPage" class="input-sm" id="selectPage" style="text-align-last:center;">
-                        <option value="default">- Select page -</option>
-                        <option th:each="m : ${selectBoxList}" th:value="${m.url}" th:text="'page ' +${m.id}"
-                                th:selected="${m.isActive()}"></option>
-                    </select>
+                    <!--<select name="selectPage" class="input-sm" id="selectPage" style="text-align-last:center;">-->
+                        <!--<option value="default">- Select page -</option>-->
+                        <!--<option th:each="m : ${selectBoxList}" th:value="${m.url}" th:text="'page ' +${m.id}"-->
+                                <!--th:selected="${m.isActive()}"></option>-->
+                    <!--</select>-->
                 </div>
                 <a class="heading-elements-toggle"><i class="icon-more"></i></a>
                 <div class="datatable-scroll">

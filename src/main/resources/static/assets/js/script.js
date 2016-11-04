@@ -24,15 +24,20 @@ $(document).ready(function() {
         console.log("click btn reboot");
         var isReboot = confirm('Reboot!!! Are you sure?');
         if (isReboot) {
+        var hasDevice = false;
             $('.myCheckBox').each(function(index, obj) {
                 var id = $(this).attr('id');
                 if ($(this).is(':checked')) {
-                var url = "/devices/" + id + "/reboot(deviceId="+ id +",timeout='3000',now='false')" ;
-                console.log(url);
-                    $.get( "/devices/" + id + "/reboot(deviceId="+ id +",timeout='3000',now='false')" );
-
+                    var url = "/devices/" + id + "/reboot" ;
+                    console.log(url);
+                    $.get( "/devices/" + id + "/reboot" );
+                    hasDevice = true;
                 }
             });
+            if (hasDevice == false)
+            {
+                alert("No device being reboot");
+            }
         }
     });
 
@@ -40,12 +45,20 @@ $(document).ready(function() {
         console.log("click btn resetFacto");
         var isReset = confirm('ResetFactory!!! Are you sure?');
         if (isReset) {
+        var hasDevice = false;
             $('.myCheckBox').each(function(index, obj) {
                 var id = $(this).attr('id');
                 if ($(this).is(':checked')) {
-                    console.log("device" + id + "reboot");
+                      var url = "/devices/" + id + "/reboot" ;
+                      console.log(url);
+                      $.get( "/devices/" + id + "/factoryReset" );
+                      hasDevice = true;
                 }
             });
+            if (hasDevice == false)
+             {
+                alert("No device being reboot");
+             }
         }
     });
 

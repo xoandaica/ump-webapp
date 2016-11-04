@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by vietnq on 10/31/16.
  */
 @Component
-public class DeviceApiClient implements IDeviceService {
+public class DeviceApiClient {
 
     private RestTemplate restTemplate;
     private String apiEndpointUrl;
@@ -26,7 +26,7 @@ public class DeviceApiClient implements IDeviceService {
     }
 
 
-    @Override
+
     public AcsResponse findDevices(Map<String, String> queryParams) {
         String queryString = StringUtils.queryStringFromMap(queryParams);
         String url = this.apiEndpointUrl + "?" + queryString;

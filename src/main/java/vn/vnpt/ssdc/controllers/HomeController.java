@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import vn.vnpt.ssdc.api.client.DeviceApiClient;
+import org.springframework.web.bind.annotation.*;
+import vn.vnpt.ssdc.api.client.AcsApiClient;
 import vn.vnpt.ssdc.dto.AcsResponse;
 import vn.vnpt.ssdc.model.Device;
 import vn.vnpt.ssdc.model.LinkModel;
@@ -26,7 +23,7 @@ import java.util.Map;
 public class HomeController {
 
     @Autowired
-    private DeviceApiClient deviceApiClient;
+    private AcsApiClient acsApiClient;
 
     @Value("${limitRecordPerpage}")
     private String limit;
@@ -36,7 +33,13 @@ public class HomeController {
 
     public static final int FIRST_PAGE = 1;
 
-
+    /**
+     * home page, show list  with current page = first page
+     *
+     *
+     * @param model
+     * @return name of html file
+     */
     @GetMapping("/")
     public String index(Model model) {
         Map<String, String> indexParams = indexParams();
@@ -54,7 +57,7 @@ public class HomeController {
         query.put("limit", limit);
         query.put("offset", "0");
         //TODO add paging param
-        AcsResponse response = deviceApiClient.findDevices(query);
+        AcsResponse response = acsApiClient.findDevices(query);
         List<Device> devices = Device.fromJsonString(response.body, indexParams.keySet());
 
         // count so page can hien thi
@@ -76,8 +79,6 @@ public class HomeController {
                 LinkModel link = new LinkModel("/getPage?indexPage=" + FIRST_PAGE + "&limit=" + limit, String.valueOf(FIRST_PAGE));
                 link.setActive(true);
                 lstPageModel.add(link);
-
-
             }
             // co nhieu hon 1 trang nhung nho hon so cac trang can hien thi
             if (numberPage > 1 && numberPage < limitPageShow) {
@@ -86,13 +87,17 @@ public class HomeController {
                 pageModel.setHasNext(false);
                 pageModel.setHasPrevious(false);
 
-                for (int i = 1; i <= numberPage; i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1; i <= numberPage; i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + FIRST_PAGE + "&limit=" + limit, String.valueOf(FIRST_PAGE));
+                link.setActive(true);
+                lstPageModel.add(link);
+
                 pageModel.setNext(FIRST_PAGE + 1);
 
             }
@@ -103,28 +108,34 @@ public class HomeController {
             pageModel.setFistPage(true);
             pageModel.setLastPage(false);
             pageModel.setHasPrevious(false);
-            for (int i = 1; i <= limitPageShow; i++) {
-                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                if (i == currentPage) {
-                    link.setActive(true);
-                }
-                lstPageModel.add(link);
-            }
+//            for (int i = 1; i <= limitPageShow; i++) {
+//                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                if (i == currentPage) {
+//                    link.setActive(true);
+//                }
+//                lstPageModel.add(link);
+//            }
+            LinkModel link = new LinkModel("/getPage?indexPage=" + FIRST_PAGE + "&limit=" + limit, String.valueOf(FIRST_PAGE));
+            link.setActive(true);
+            lstPageModel.add(link);
             pageModel.setNext(FIRST_PAGE + 1);
-
         } else {
             // bang dung so trang can hien thi
             pageModel.setHasNext(false);
             pageModel.setFistPage(true);
             pageModel.setLastPage(false);
             pageModel.setHasPrevious(false);
-            for (int i = 1; i <= limitPageShow; i++) {
-                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                if (i == currentPage) {
-                    link.setActive(true);
-                }
-                lstPageModel.add(link);
-            }
+//            for (int i = 1; i <= limitPageShow; i++) {
+//                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                if (i == currentPage) {
+//                    link.setActive(true);
+//                }
+//                lstPageModel.add(link);
+//            }
+            LinkModel link = new LinkModel("/getPage?indexPage=" + FIRST_PAGE + "&limit=" + limit, String.valueOf(FIRST_PAGE));
+            link.setActive(true);
+            lstPageModel.add(link);
+
             pageModel.setNext(FIRST_PAGE + 1);
         }
 
@@ -146,6 +157,16 @@ public class HomeController {
         return "index";
     }
 
+
+    /**
+     *
+     * show page after paging
+     *
+     * @param indexPage     current page
+     * @param limit         be configured in application.yaml
+     * @param model
+     * @return html file with list after paging.
+     */
     @RequestMapping(value = "/getPage", params = {"indexPage", "limit"}, method = RequestMethod.GET)
     public String indexPaging(@RequestParam("indexPage") String indexPage, @RequestParam("limit") String limit, Model model) {
         Map<String, String> indexParams = indexParams();
@@ -166,7 +187,7 @@ public class HomeController {
         query.put("limit", String.valueOf(limitRecordPerPage));
         query.put("offset", String.valueOf(offset));
         //TODO add paging param
-        AcsResponse response = deviceApiClient.findDevices(query);
+        AcsResponse response = acsApiClient.findDevices(query);
         List<Device> devices = Device.fromJsonString(response.body, indexParams.keySet());
 
         int numberPage = response.nbOfItems / limitRecordPerPage;
@@ -195,13 +216,16 @@ public class HomeController {
             // co nhieu hon 1 trang nhung nho hon so cac trang can hien thi
             if (numberPage > 1 && numberPage < limitPageShow) {
                 int pageNeedShow = numberPage;
-                for (int i = 1; i <= pageNeedShow; i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1; i <= pageNeedShow; i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+                link.setActive(true);
+                lstPageModel.add(link);
 
                 pageModel.setNext(currentPage + 1);
                 pageModel.setPrevious(currentPage - 1);
@@ -219,52 +243,64 @@ public class HomeController {
                 pageModel.setLastPage(false);
                 pageModel.setHasNext(true);
                 pageModel.setHasPrevious(false);
-                for (int i = 1; i <= limitPageShow; i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1; i <= limitPageShow; i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+                link.setActive(true);
+                lstPageModel.add(link);
             }
             if (currentPage > FIRST_PAGE && currentPage <= limitPageShow) {
                 pageModel.setFistPage(false);
                 pageModel.setLastPage(false);
                 pageModel.setHasNext(true);
                 pageModel.setHasPrevious(false);
-                for (int i = 1; i <= limitPageShow; i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1; i <= limitPageShow; i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+                link.setActive(true);
+                lstPageModel.add(link);
             }
             if (currentPage > limitPageShow && currentPage < numberPage) {
                 pageModel.setFistPage(false);
                 pageModel.setLastPage(false);
                 pageModel.setHasNext(true);
                 pageModel.setHasPrevious(true);
-                for (int i = 1 + (currentPage - limitPageShow); i <= limitPageShow + (currentPage - limitPageShow); i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1 + (currentPage - limitPageShow); i <= limitPageShow + (currentPage - limitPageShow); i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+                link.setActive(true);
+                lstPageModel.add(link);
             }
             if (currentPage == numberPage) {
                 pageModel.setFistPage(false);
                 pageModel.setLastPage(true);
                 pageModel.setHasNext(false);
                 pageModel.setHasPrevious(true);
-                for (int i = 1 + (currentPage - limitPageShow); i <= limitPageShow + (currentPage - limitPageShow); i++) {
-                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                    if (i == currentPage) {
-                        link.setActive(true);
-                    }
-                    lstPageModel.add(link);
-                }
+//                for (int i = 1 + (currentPage - limitPageShow); i <= limitPageShow + (currentPage - limitPageShow); i++) {
+//                    LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                    if (i == currentPage) {
+//                        link.setActive(true);
+//                    }
+//                    lstPageModel.add(link);
+//                }
+                LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+                link.setActive(true);
+                lstPageModel.add(link);
             }
 
         } else {
@@ -272,13 +308,16 @@ public class HomeController {
             pageModel.setHasNext(false);
             pageModel.setHasPrevious(false);
 
-            for (int i = 1; i <= limitPageShow; i++) {
-                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
-                if (i == currentPage) {
-                    link.setActive(true);
-                }
-                lstPageModel.add(link);
-            }
+//            for (int i = 1; i <= limitPageShow; i++) {
+//                LinkModel link = new LinkModel("/getPage?indexPage=" + i + "&limit=" + limit, String.valueOf(i));
+//                if (i == currentPage) {
+//                    link.setActive(true);
+//                }
+//                lstPageModel.add(link);
+//            }
+            LinkModel link = new LinkModel("/getPage?indexPage=" + currentPage + "&limit=" + limit, String.valueOf(currentPage));
+            link.setActive(true);
+            lstPageModel.add(link);
             pageModel.setNext(currentPage + 1);
             pageModel.setPrevious(currentPage - 1);
             if (currentPage == FIRST_PAGE) {
@@ -295,7 +334,6 @@ public class HomeController {
             }
 
         }
-
         model.addAttribute("total", response.nbOfItems);
         model.addAttribute("indexParams", indexParams);
         model.addAttribute("devices", devices);
@@ -327,5 +365,42 @@ public class HomeController {
         }};
     }
 
+    /**
+     * Reboot device by device ID
+     *
+     * @param deviceId
+     * @param timeout
+     * @param now      :now = true then reboot right now
+     * @return 202 if the tasks have been queued to be executed at the next inform.
+     * 404 Not found
+     * status code 200 if tasks have been successfully executed
+     */
+    @GetMapping("/devices/{deviceId}/reboot")
+    @ResponseBody
+    public AcsResponse reboot(@PathVariable String deviceId,
+                              @RequestParam(value = "timeout", defaultValue = "3000") String timeout,
+                              @RequestParam(value = "now", defaultValue = "false") String now) {
+        AcsResponse result = acsApiClient.reboot(deviceId, timeout, now);
+        return result;
+    }
+
+
+    /**
+     * Factory device by device ID
+     *
+     * @param deviceId
+     * @param timeout
+     * @param now      :now = true then factoryReset right now
+     * @return 202 if the tasks have been queued to be executed at the next inform.
+     * 404 Not found
+     * status code 200 if tasks have been successfully executed
+     */
+    @GetMapping("/devices/{deviceId}/factoryReset")
+    @ResponseBody
+    public AcsResponse factoryReset(@PathVariable String deviceId,
+                                    @RequestParam(value = "timeout", defaultValue = "3000") String timeout,
+                                    @RequestParam(value = "now", defaultValue = "false") String now) {
+        return acsApiClient.factoryReset(deviceId, timeout, now);
+    }
 
 }
